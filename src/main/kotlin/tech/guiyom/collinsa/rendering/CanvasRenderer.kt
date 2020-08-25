@@ -41,7 +41,7 @@ open class CanvasRenderer : AbstractRenderer() {
             BufferCapabilities(
                 ImageCapabilities(true),
                 ImageCapabilities(true),
-                BufferCapabilities.FlipContents.BACKGROUND
+                null
             )
         )
     }
@@ -49,7 +49,7 @@ open class CanvasRenderer : AbstractRenderer() {
     override fun render(entities: ImmutableArray<Entity>, deltaTime: Float) {
         val g = canvas.bufferStrategy.drawGraphics as Graphics2D
 
-        render(entities, deltaTime, g)
+        super.render(entities, deltaTime, g)
 
         EventQueue.invokeLater {
             canvas.bufferStrategy.show()

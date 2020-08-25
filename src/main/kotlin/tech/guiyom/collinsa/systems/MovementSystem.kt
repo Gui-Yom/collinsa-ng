@@ -18,5 +18,6 @@ class MovementSystem : IteratingSystem(allOf(PositionComponent::class, SpeedComp
         val speed = entity[speedM]!!
         position.x += speed.speedX * deltaTime * 0.001f
         position.y += speed.speedY * deltaTime * 0.001f
+        // TODO integrate physics solver
     }
 }

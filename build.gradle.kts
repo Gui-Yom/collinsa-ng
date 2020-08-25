@@ -1,6 +1,5 @@
 plugins {
     kotlin("jvm")
-    kotlin("kapt")
     application
     id("com.github.johnrengelman.shadow") version "6.0.0"
     id("com.github.ben-manes.versions") version "0.29.0"
@@ -19,7 +18,6 @@ dependencies {
     val kotlinVersion: String by project
     implementation(platform(kotlin("bom", kotlinVersion)))
     implementation(kotlin("stdlib-jdk8"))
-    //implementation(kotlin("reflect"))
 
     implementation("com.badlogicgames.ashley:ashley:1.7.4-SNAPSHOT")
     implementation("io.github.libktx:ktx-ashley:1.9.11-b1")
@@ -34,10 +32,6 @@ application {
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
-}
-
-kapt {
-
 }
 
 tasks {
@@ -55,6 +49,7 @@ tasks {
 
     shadowJar {
         mergeServiceFiles()
+        minimize()
     }
 
     dependencyUpdates {
