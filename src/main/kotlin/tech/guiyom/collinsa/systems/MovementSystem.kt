@@ -1,20 +1,21 @@
 package tech.guiyom.collinsa.systems
 
-import com.badlogic.ashley.core.ComponentMapper
 import com.badlogic.ashley.core.Entity
-import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
+import ktx.ashley.allOf
+import ktx.ashley.get
+import ktx.ashley.mapperFor
 import tech.guiyom.collinsa.components.PositionComponent
 import tech.guiyom.collinsa.components.SpeedComponent
 
-class MovementSystem : IteratingSystem(Family.all(PositionComponent::class.java, SpeedComponent::class.java).get()) {
+class MovementSystem : IteratingSystem(allOf(PositionComponent::class, SpeedComponent::class).get()) {
 
-    private val positionM = ComponentMapper.getFor(PositionComponent::class.java)
-    private val speedM = ComponentMapper.getFor(SpeedComponent::class.java)
+    private val positionM = mapperFor<PositionComponent>()
+    private val speedM = mapperFor<SpeedComponent>()
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
-        val position = positionM[entity]
-        val speed = speedM[entity]
+        val position = entity[positionM]!!
+        val speed = entity[speedM]!!
         position.x += speed.speedX * deltaTime * 0.001f
         position.y += speed.speedY * deltaTime * 0.001f
     }

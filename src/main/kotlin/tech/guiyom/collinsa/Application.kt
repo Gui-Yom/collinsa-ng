@@ -1,5 +1,8 @@
 package tech.guiyom.collinsa
 
+import ktx.ashley.add
+import ktx.ashley.entity
+import ktx.ashley.with
 import org.slf4j.LoggerFactory
 import tech.guiyom.collinsa.components.CollisionComponent
 import tech.guiyom.collinsa.components.PositionComponent
@@ -28,28 +31,24 @@ fun main(args: Array<String>) {
 
     val rand = Random.Default
     val image = ImageIO.read(CanvasRenderer::class.java.getResourceAsStream("/louis.png"))
-    for (i in 0..32) {
-        val speed = world.engine.createComponent(SpeedComponent::class.java)
-        speed.speedX = rand.nextFloat() * 15f
-        speed.speedY = rand.nextFloat() * 15f
-
-        val position = world.engine.createComponent(PositionComponent::class.java)
-        position.x = rand.nextFloat() * 800
-        position.y = rand.nextFloat() * 600
-
-        val visual = world.engine.createComponent(VisualComponent::class.java)
-        visual.image = image
-
-        val collision = world.engine.createComponent(CollisionComponent::class.java)
-        collision.radius = 16f
-
-        world.engine.addEntity(
-            world.engine.createEntity()
-                .add(position)
-                .add(speed)
-                .add(visual)
-                .add(collision)
-        )
+    world.engine.add {
+        for (i in 0..32)
+            entity {
+                with<PositionComponent> {
+                    x = rand.nextFloat() * 800
+                    y = rand.nextFloat() * 600
+                }
+                with<SpeedComponent> {
+                    speedX = rand.nextFloat() * 15f
+                    speedY = rand.nextFloat() * 15f
+                }
+                with<VisualComponent> {
+                    this.image = image
+                }
+                with<CollisionComponent> {
+                    radius = 16f
+                }
+            }
     }
 
     world.engine.addSystem(MovementSystem())

@@ -10,7 +10,7 @@ import java.util.concurrent.SynchronousQueue
  */
 class ThreadedCanvasRenderer : CanvasRenderer() {
 
-    private val queue = SynchronousQueue<Pair<ImmutableArray<Entity>, Float>>(true)
+    private val queue = SynchronousQueue<Pair<ImmutableArray<Entity>, Float>>(false)
 
     private val renderThread = Thread {
         while (true) {
