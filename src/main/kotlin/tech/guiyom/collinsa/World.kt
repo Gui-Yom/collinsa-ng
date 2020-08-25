@@ -4,9 +4,9 @@ import com.badlogic.ashley.core.PooledEngine
 
 class World {
 
-    val engine = PooledEngine(16, 128, 32, 256)
+    val engine = PooledEngine(256, 256, 512, 1024)
 
-    fun loop() {
-        engine.update(1000f)
+    fun loop(deltaTime: Float) {
+        engine.update(deltaTime)
     }
 }

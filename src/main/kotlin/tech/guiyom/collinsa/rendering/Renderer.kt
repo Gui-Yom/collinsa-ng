@@ -8,5 +8,5 @@ interface Renderer : Closeable {
 
     fun init()
 
-    fun render(entities: ImmutableArray<Entity>)
+    fun render(entities: ImmutableArray<Entity>, deltaTime: Float)
 }

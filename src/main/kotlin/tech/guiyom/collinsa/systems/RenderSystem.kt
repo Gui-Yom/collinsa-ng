@@ -18,7 +18,7 @@ class RenderSystem(private val renderer: Renderer) : EntitySystem() {
     }
 
     override fun update(deltaTime: Float) {
-        renderer.render(entities!!)
+        renderer.render(entities!!, deltaTime)
     }
 
     override fun removedFromEngine(engine: Engine) {

@@ -10,12 +10,12 @@ import java.util.concurrent.SynchronousQueue
  */
 class ThreadedCanvasRenderer : CanvasRenderer() {
 
-    private val queue = SynchronousQueue<ImmutableArray<Entity>>(true)
+    private val queue = SynchronousQueue<Pair<ImmutableArray<Entity>, Float>>(true)
 
     private val renderThread = Thread {
         while (true) {
-            val world = queue.take()
-            super.render(world)
+            val pair = queue.take()
+            super.render(pair.first, pair.second)
         }
     }
 
@@ -29,8 +29,8 @@ class ThreadedCanvasRenderer : CanvasRenderer() {
         renderThread.start()
     }
 
-    override fun render(entities: ImmutableArray<Entity>) {
-        queue.put(entities)
+    override fun render(entities: ImmutableArray<Entity>, deltaTime: Float) {
+        queue.put(entities to deltaTime)
     }
 
     override fun close() {

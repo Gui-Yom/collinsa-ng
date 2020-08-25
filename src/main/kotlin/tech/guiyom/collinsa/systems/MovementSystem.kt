@@ -12,7 +12,7 @@ class MovementSystem : IteratingSystem(Family.all(PositionComponent::class.java,
     private val positionM = ComponentMapper.getFor(PositionComponent::class.java)
     private val speedM = ComponentMapper.getFor(SpeedComponent::class.java)
 
-    override fun processEntity(entity: Entity?, deltaTime: Float) {
+    override fun processEntity(entity: Entity, deltaTime: Float) {
         val position = positionM[entity]
         val speed = speedM[entity]
         position.x += speed.speedX * deltaTime * 0.001f
