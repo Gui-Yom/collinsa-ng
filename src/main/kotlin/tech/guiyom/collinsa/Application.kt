@@ -1,12 +1,15 @@
 package tech.guiyom.collinsa
 
 import org.slf4j.LoggerFactory
+import tech.guiyom.collinsa.components.CollisionComponent
 import tech.guiyom.collinsa.components.PositionComponent
 import tech.guiyom.collinsa.components.SpeedComponent
+import tech.guiyom.collinsa.components.VisualComponent
 import tech.guiyom.collinsa.rendering.CanvasRenderer
 import tech.guiyom.collinsa.systems.MovementSystem
 import tech.guiyom.collinsa.systems.RenderSystem
 import java.awt.GraphicsEnvironment
+import javax.imageio.ImageIO
 import kotlin.math.max
 import kotlin.random.Random
 import kotlin.system.exitProcess
@@ -24,17 +27,28 @@ fun main(args: Array<String>) {
     val world = World()
 
     val rand = Random.Default
-    for (i in 0..200) {
+    val image = ImageIO.read(CanvasRenderer::class.java.getResourceAsStream("/louis.png"))
+    for (i in 0..32) {
         val speed = world.engine.createComponent(SpeedComponent::class.java)
         speed.speedX = rand.nextFloat() * 15f
         speed.speedY = rand.nextFloat() * 15f
+
         val position = world.engine.createComponent(PositionComponent::class.java)
         position.x = rand.nextFloat() * 800
         position.y = rand.nextFloat() * 600
+
+        val visual = world.engine.createComponent(VisualComponent::class.java)
+        visual.image = image
+
+        val collision = world.engine.createComponent(CollisionComponent::class.java)
+        collision.radius = 16f
+
         world.engine.addEntity(
             world.engine.createEntity()
                 .add(position)
                 .add(speed)
+                .add(visual)
+                .add(collision)
         )
     }
 

@@ -5,13 +5,16 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.utils.ImmutableArray
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import tech.guiyom.collinsa.components.CollisionComponent
 import tech.guiyom.collinsa.components.PositionComponent
+import tech.guiyom.collinsa.components.SpeedComponent
+import tech.guiyom.collinsa.components.VisualComponent
 import java.awt.*
 import java.awt.event.FocusEvent
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
-import java.awt.image.BufferedImage
-import javax.imageio.ImageIO
+import java.awt.geom.Ellipse2D
+import java.awt.geom.Line2D
 import kotlin.math.roundToInt
 import kotlin.system.exitProcess
 
@@ -23,9 +26,13 @@ open class CanvasRenderer : Renderer {
     protected val log: Logger = LoggerFactory.getLogger("Renderer")
     protected val frame = Frame("Collinsa-ng")
     protected val canvas = Canvas()
-    protected val positionM: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent::class.java)
     protected val font: Font = Font.decode("Consolas")
-    protected val image: BufferedImage = ImageIO.read(CanvasRenderer::class.java.getResourceAsStream("/louis.png"))
+
+    protected val positionM: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent::class.java)
+    protected val speedM: ComponentMapper<SpeedComponent> = ComponentMapper.getFor(SpeedComponent::class.java)
+    protected val visualM: ComponentMapper<VisualComponent> = ComponentMapper.getFor(VisualComponent::class.java)
+    protected val collisionM: ComponentMapper<CollisionComponent> =
+        ComponentMapper.getFor(CollisionComponent::class.java)
 
     init {
         frame.setSize(800, 600)
@@ -61,14 +68,30 @@ open class CanvasRenderer : Renderer {
         g.color = Color.WHITE
         g.fillRect(0, 0, 800, 600)
 
-        g.color = Color.BLACK
         for (entity in entities) {
             val position = positionM[entity]
-            //val shape = Ellipse2D.Float(position.x + 5, position.y + 5, 4f, 4f)
-            //g.fill(shape)
-            g.drawImage(image, position.x.toInt() + 16, position.y.toInt() + 16, 16, 16, null)
+            val speed = speedM[entity]
+            val visual = visualM[entity]
+            val collision = collisionM[entity]
+            // Visual
+            val size = 12
+            g.drawImage(visual.image, position.x.toInt() - size, position.y.toInt() - size, size * 2, size * 2, null)
+            // Collision
+            g.color = Color.BLACK
+            g.draw(
+                Ellipse2D.Float(
+                    position.x - collision.radius,
+                    position.y - collision.radius,
+                    collision.radius * 2,
+                    collision.radius * 2
+                )
+            )
+            // Speed
+            g.color = Color.RED
+            g.draw(Line2D.Float(position.x, position.y, position.x + speed.speedX, position.y + speed.speedY))
         }
 
+        g.color = Color.BLACK
         g.font = font
         g.drawString(count.toString(), 740, 20)
         g.drawString((1000 / deltaTime).roundToInt().toString(), 740, 40)
