@@ -15,13 +15,11 @@ repositories {
     maven("https://oss.sonatype.org/content/repositories/snapshots/")
 }
 
-val developmentOnly: Configuration by configurations.creating
-
 dependencies {
     val kotlinVersion: String by project
     implementation(platform(kotlin("bom", kotlinVersion)))
     implementation(kotlin("stdlib-jdk8"))
-    implementation(kotlin("reflect"))
+    //implementation(kotlin("reflect"))
 
     implementation("com.badlogicgames.ashley:ashley:1.7.4-SNAPSHOT")
 
