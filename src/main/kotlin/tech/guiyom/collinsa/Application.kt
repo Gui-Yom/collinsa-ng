@@ -1,8 +1,8 @@
 package tech.guiyom.collinsa
 
-import ktx.ashley.add
-import ktx.ashley.entity
-import ktx.ashley.with
+import com.artemis.World
+import com.artemis.WorldConfiguration
+import com.artemis.WorldConfigurationBuilder
 import org.slf4j.LoggerFactory
 import tech.guiyom.collinsa.components.CollisionComponent
 import tech.guiyom.collinsa.components.PositionComponent
@@ -27,7 +27,7 @@ fun main(args: Array<String>) {
         exitProcess(-2)
     }
 
-    val world = World()
+    val world = World(WorldConfigurationBuilder().)
 
     val rand = Random.Default
     val image = ImageIO.read(CanvasRenderer::class.java.getResourceAsStream("/louis.png"))

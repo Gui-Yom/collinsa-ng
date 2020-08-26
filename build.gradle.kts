@@ -19,8 +19,8 @@ dependencies {
     implementation(platform(kotlin("bom", kotlinVersion)))
     implementation(kotlin("stdlib-jdk8"))
 
-    implementation("com.badlogicgames.ashley:ashley:1.7.4-SNAPSHOT")
-    implementation("io.github.libktx:ktx-ashley:1.9.11-b1")
+    val artemisVersion: String by project
+    implementation("net.onedaybeard.artemis:artemis-odb:$artemisVersion")
 
     implementation("org.slf4j:slf4j-api:1.7.30")
     runtimeOnly("ch.qos.logback:logback-classic:1.2.3")

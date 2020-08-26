@@ -12,4 +12,4 @@ pluginManagement {
         }
     }
 }
-rootProject.name="collinsa-ng"
+rootProject.name = "collinsa-ng"
